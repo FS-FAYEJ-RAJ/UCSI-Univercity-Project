@@ -1,4 +1,4 @@
-package com.example.nfcapplication
+package com.nfcunivercity.app
 
 import io.flutter.embedding.android.FlutterActivity
 

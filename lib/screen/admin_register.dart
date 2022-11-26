@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:nfcapplication/screen/active_nfc_page.dart';
 import 'package:nfcapplication/them/color_them.dart';
@@ -15,7 +16,9 @@ class AdminRegister extends StatefulWidget {
 }
 
 class _AdminRegisterState extends State<AdminRegister> {
+  final TextEditingController nameControllar=TextEditingController();
   final TextEditingController idControllar=TextEditingController();
+  final TextEditingController emailControllar=TextEditingController();
   final TextEditingController passwordcontrollar=TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -50,13 +53,13 @@ class _AdminRegisterState extends State<AdminRegister> {
                           textStyle: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15,color: Colors.white)),),
                     ),
-                    TextFildWidget(name: 'Name',controller: idControllar,),
+                    TextFildWidget(name: 'Name',controller: nameControllar,),
                     Padding(
                         padding: const EdgeInsets.only(left: 16),
                         child: Text('ID',style: GoogleFonts.alata(
                             textStyle: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 15,color: Colors.white)))),
-                    TextFildWidget(name: 'ID', controller: passwordcontrollar),
+                    TextFildWidget(name: 'ID', controller: idControllar),
                   //  porer TextFile 2 ta Akhane Nilam
                     Padding(
                       padding: const EdgeInsets.only(left: 16),
@@ -64,7 +67,7 @@ class _AdminRegisterState extends State<AdminRegister> {
                           textStyle: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15,color: Colors.white)),),
                     ),
-                    TextFildWidget(name: 'Email',controller: idControllar,),
+                    TextFildWidget(name: 'Email',controller: emailControllar,),
                     Padding(
                         padding: const EdgeInsets.only(left: 16),
                         child: Text('password',style: GoogleFonts.alata(
@@ -73,13 +76,19 @@ class _AdminRegisterState extends State<AdminRegister> {
                     TextFildWidget(name: 'password', controller: passwordcontrollar),
                   ],
                 ),
+
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ButtonDesign(buttonname: 'Student',onTab: (){},),
+                  child: ButtonDesign(buttonname: 'Student',onTab: (){
+                    studentregister();
+                  },),
                 ),
+
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ButtonDesign(buttonname: 'LECTURER',onTab: (){},),
+                  child: ButtonDesign(buttonname: 'LECTURER',onTab: (){
+                    lecturetregister();
+                  },),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -95,5 +104,29 @@ class _AdminRegisterState extends State<AdminRegister> {
         ),
       ),
     );
+  }
+
+  Future studentregister()async{
+   await FirebaseFirestore.instance.collection("Student").add(
+      {
+        "name" : nameControllar.text,
+        "id"   : idControllar.text,
+        "Email" : emailControllar.text,
+        "password"   :passwordcontrollar.text
+      }
+    );
+
+  }
+
+  Future lecturetregister()async{
+   await FirebaseFirestore.instance.collection("Lecturer").add(
+        {
+          "name" : nameControllar.text,
+          "id"   : idControllar.text,
+          "Email" : emailControllar.text,
+          "password"  :passwordcontrollar.text
+        }
+    );
+
   }
 }

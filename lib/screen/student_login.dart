@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nfcapplication/screen/stafe_login_screen.dart';
 
@@ -16,6 +19,13 @@ class StudentLoginScreen extends StatefulWidget {
 class _StudentLoginScreenState extends State<StudentLoginScreen> {
   final TextEditingController idControllar=TextEditingController();
   final TextEditingController passwordcontrollar=TextEditingController();
+
+  List allColetionData=[];
+
+  bool data=false;
+
+  FirebaseAuth _auth=FirebaseAuth.instance;
+  bool loder=false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,9 +76,29 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
                       SizedBox(height: 10,),
                     ],
                   ),
-                  ButtonDesign(buttonname: 'Login',onTab: (){},),
-                  SizedBox(height: 10,),
+                  ButtonDesign(buttonname: 'Login',onTab: (){
+                    // getData();
+                    colectData().then((value)
+                    {
+                      if(data=true)
+                        {
+                          Navigator.push(context, MaterialPageRoute(builder: (_)=>StafeLoginScreen()));
+                        }
+                      else{
+                        Fluttertoast.showToast(
+                            msg: "Login Error",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                        );
+                      }
+                    });
 
+                  },),
+                  SizedBox(height: 10,),
                   ButtonDesign(buttonname: 'NextPage',onTab: (){
                     Navigator.push(context,MaterialPageRoute(builder: (_)=>StafeLoginScreen()));
                   },)
@@ -80,4 +110,45 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
         ),
     );
   }
+
+  CollectionReference student =
+  FirebaseFirestore.instance.collection('Student');
+
+  Future<void> getData() async {
+    // Get docs from collection reference
+    QuerySnapshot querySnapshot = await student.get();
+
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    setState(() {
+      allColetionData=allData;
+    });
+
+    print(allColetionData);
+  }
+
+  Future colectData()async {
+    getData();
+    for( int i=0;i<allColetionData.length;i++){
+      if(allColetionData[i]['id']==idControllar.text && allColetionData[i]['password']==passwordcontrollar.text ){
+        setState(() {
+          data=true;
+
+        });
+        print(allColetionData[i]['id']);
+        print(allColetionData[i]['password']);
+
+      }else{
+        setState(() {
+          data=false;
+
+        });
+        print(data);
+      }
+
+
+    }
+
+  }
+
+
 }
