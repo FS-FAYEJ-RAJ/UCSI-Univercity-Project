@@ -8,6 +8,7 @@ import 'package:nfcapplication/screen/stafe_login_screen.dart';
 import '../widged/button_widget.dart';
 import '../widged/heder_conteinar.dart';
 import '../widged/textfild_widget.dart';
+import 'Logged.dart';
 import 'forget_password_screen.dart';
 
 class StudentLoginScreen extends StatefulWidget {
@@ -22,12 +23,14 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
 
   List allColetionData=[];
 
-  bool data=false;
+
 
   FirebaseAuth _auth=FirebaseAuth.instance;
   bool loder=false;
   @override
   Widget build(BuildContext context) {
+    bool data=false;
+
     return Scaffold(
       backgroundColor: Colors.blueGrey,
         body: SafeArea(
@@ -76,32 +79,58 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
                       SizedBox(height: 10,),
                     ],
                   ),
-                  ButtonDesign(buttonname: 'Login',onTab: (){
+                  ButtonDesign(buttonname: 'Login',onTab: ()async{
+                    QuerySnapshot querySnapshot = await student.get();
+
+                    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+                    setState(() {
+                      allColetionData=allData;
+                    });
+                    print(allColetionData);
+                    for( int i=0;i<allColetionData.length;i++){
+                      if(allColetionData[i]['id']==idControllar.text && allColetionData[i]['password']==passwordcontrollar.text ){
+                        setState(() {
+                          data=true;
+
+                        });
+                        print(data);
+                        print(allColetionData[i]['id']);
+                        print(allColetionData[i]['password']);
+
+                      }else{
+
+                        print(data);
+                      }
+
+
+                    }
                     // getData();
-                    colectData().then((value)
-                    {
-                      if(data=true)
+
+                      if(data==false)
                         {
-                          Navigator.push(context, MaterialPageRoute(builder: (_)=>StafeLoginScreen()));
+                          Fluttertoast.showToast(
+                              msg: "Login Error",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0
+                          );
+
+
                         }
                       else{
-                        Fluttertoast.showToast(
-                            msg: "Login Error",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.red,
-                            textColor: Colors.white,
-                            fontSize: 16.0
-                        );
+                        Navigator.push(context, MaterialPageRoute(builder: (_)=>Logged()));
+
                       }
-                    });
+
 
                   },),
                   SizedBox(height: 10,),
-                  ButtonDesign(buttonname: 'NextPage',onTab: (){
-                    Navigator.push(context,MaterialPageRoute(builder: (_)=>StafeLoginScreen()));
-                  },)
+                  // ButtonDesign(buttonname: 'NextPage',onTab: (){
+                  //   Navigator.push(context,MaterialPageRoute(builder: (_)=>StafeLoginScreen()));
+                  // },)
 
                 ],
               ),
@@ -116,37 +145,32 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
 
   Future<void> getData() async {
     // Get docs from collection reference
-    QuerySnapshot querySnapshot = await student.get();
 
-    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    setState(() {
-      allColetionData=allData;
-    });
 
-    print(allColetionData);
   }
 
   Future colectData()async {
     getData();
-    for( int i=0;i<allColetionData.length;i++){
-      if(allColetionData[i]['id']==idControllar.text && allColetionData[i]['password']==passwordcontrollar.text ){
-        setState(() {
-          data=true;
 
-        });
-        print(allColetionData[i]['id']);
-        print(allColetionData[i]['password']);
-
-      }else{
-        setState(() {
-          data=false;
-
-        });
-        print(data);
-      }
-
-
-    }
+    // for( int i=0;i<allColetionData.length;i++){
+    //   if(allColetionData[i]['id']==idControllar.text && allColetionData[i]['password']==passwordcontrollar.text ){
+    //     setState(() {
+    //       data=true;
+    //
+    //     });
+    //     print(allColetionData[i]['id']);
+    //     print(allColetionData[i]['password']);
+    //
+    //   }else{
+    //     setState(() {
+    //       data=false;
+    //
+    //     });
+    //     print(data);
+    //   }
+    //
+    //
+    // }
 
   }
 

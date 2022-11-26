@@ -22,7 +22,7 @@ class _ActiveNFCState extends State<ActiveNFC> {
         child: Align(
           child: Column(
              children: [
-              HederConteinar(),
+              const HederConteinar(),
             Text('ADMIN PANNEL',style: GoogleFonts.alata(
                 textStyle: TextStyle(
                     fontWeight: FontWeight.bold, fontSize: 30,color: Colors.indigo))),

@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nfcapplication/screen/visitor_login_screen.dart';
 
 import '../widged/button_widget.dart';
 import '../widged/heder_conteinar.dart';
 import '../widged/textfild_widget.dart';
+import 'Logged.dart';
+import 'active_nfc_page.dart';
 import 'forget_password_screen.dart';
 class StafeLoginScreen extends StatefulWidget {
   const StafeLoginScreen({Key? key}) : super(key: key);
@@ -15,6 +19,10 @@ class StafeLoginScreen extends StatefulWidget {
 class _StafeLoginScreenState extends State<StafeLoginScreen> {
   final TextEditingController idControllar=TextEditingController();
   final TextEditingController passwordcontrollar=TextEditingController();
+  bool data=false;
+  List allColetionData=[];
+  CollectionReference staff =
+  FirebaseFirestore.instance.collection('Lecturer');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,11 +73,57 @@ class _StafeLoginScreenState extends State<StafeLoginScreen> {
                     SizedBox(height: 10,),
                   ],
                 ),
-                ButtonDesign(buttonname: 'Login',onTab: (){},),
+                ButtonDesign(buttonname: 'Login',onTab: ()async{
+                  QuerySnapshot querySnapshot = await staff.get();
+
+                  final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+                  setState(() {
+                    allColetionData=allData;
+                  });
+                  print(allColetionData);
+                  for( int i=0;i<allColetionData.length;i++){
+                    if(allColetionData[i]['id']==idControllar.text && allColetionData[i]['password']==passwordcontrollar.text ){
+                      setState(() {
+                        data=true;
+
+                      });
+                      print(data);
+                      print(allColetionData[i]['id']);
+                      print(allColetionData[i]['password']);
+
+                    }else{
+
+                      print(data);
+                    }
+
+
+                  }
+                  // getData();
+
+                  if(data==false)
+                  {
+                    Fluttertoast.showToast(
+                        msg: "Login Error",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0
+                    );
+
+
+                  }
+                  else{
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>Logged()));
+
+                  }
+                },),
                 SizedBox(height: 10,),
-                ButtonDesign(buttonname: 'NextPage',onTab: (){
-                   Navigator.push(context,MaterialPageRoute(builder: (_)=>VisitorLoginScreen()));
-                },)
+                // ButtonDesign(buttonname: 'NextPage',onTab: (){
+                //
+                //    //Navigator.push(context,MaterialPageRoute(builder: (_)=>VisitorLoginScreen()));
+                // },)
 
               ],
             ),
