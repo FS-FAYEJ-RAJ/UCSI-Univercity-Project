@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nfcapplication/screen/change_password_screen.dart';
@@ -14,6 +15,9 @@ class ForgetPasswordScreen extends StatefulWidget {
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   final TextEditingController idcontrollar=TextEditingController();
+
+  FirebaseAuth _auth=FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,8 +45,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 ],
               ),
               SizedBox(height: 20,),
-
               ButtonDesign(buttonname: 'Reset Password',onTab: (){
+                _auth.sendPasswordResetEmail(email: idcontrollar.text);
                 Navigator.push(context,MaterialPageRoute(builder: (_)=>ResetPassword()));
               },)
             ],

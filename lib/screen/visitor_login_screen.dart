@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nfcapplication/screen/active_nfc_page.dart';
 import 'package:nfcapplication/screen/forget_password_screen.dart';
 import 'package:nfcapplication/them/color_them.dart';
@@ -16,8 +18,12 @@ class VisitorLoginScreen extends StatefulWidget {
 }
 
 class _VisitorLoginScreenState extends State<VisitorLoginScreen> {
-  final TextEditingController idControllar=TextEditingController();
+  final TextEditingController nameControllar=TextEditingController();
   final TextEditingController passwordcontrollar=TextEditingController();
+  final TextEditingController idControllar=TextEditingController();
+  final TextEditingController emailcontrollar=TextEditingController();
+
+  bool loder=false;
   @override
   Widget build(BuildContext context) {
     var hig = MediaQuery.of(context).size.height;
@@ -51,13 +57,13 @@ class _VisitorLoginScreenState extends State<VisitorLoginScreen> {
                           textStyle: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15,color: Colors.white)),),
                     ),
-                    TextFildWidget(name: 'Name',controller: idControllar,),
+                    TextFildWidget(name: 'Name',controller: nameControllar,),
                     Padding(
                         padding: const EdgeInsets.only(left: 16),
                         child: Text('ID',style: GoogleFonts.alata(
                             textStyle: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 15,color: Colors.white)))),
-                    TextFildWidget(name: 'ID', controller: passwordcontrollar),
+                    TextFildWidget(name: 'ID', controller: idControllar),
                     //  porer TextFile 2 ta Akhane Nilam
                     Padding(
                       padding: const EdgeInsets.only(left: 16),
@@ -65,7 +71,7 @@ class _VisitorLoginScreenState extends State<VisitorLoginScreen> {
                           textStyle: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15,color: Colors.white)),),
                     ),
-                    TextFildWidget(name: 'Email',controller: idControllar,),
+                    TextFildWidget(name: 'Email',controller: emailcontrollar,),
                     Padding(
                         padding: const EdgeInsets.only(left: 16),
                         child: Text('password',style: GoogleFonts.alata(
@@ -76,7 +82,8 @@ class _VisitorLoginScreenState extends State<VisitorLoginScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ButtonDesign(buttonname: 'Login',onTab: (){
+                  child:loder ? Center(child: CircularProgressIndicator(),) : ButtonDesign(buttonname: 'Login',onTab: (){
+                    visitorlogin();
                   },),
                 ),
 
@@ -86,5 +93,36 @@ class _VisitorLoginScreenState extends State<VisitorLoginScreen> {
         ),
       ),
     );
+  }
+
+  Future visitorlogin() async{
+    setState(() {
+      loder=true;
+    });
+
+    await FirebaseFirestore.instance.collection('visitor').add(
+      {
+        "name" : nameControllar.text,
+        "id" : idControllar.text,
+        "email" : emailcontrollar.text,
+        "password" :passwordcontrollar.text
+
+      }
+
+    );
+    setState(() {
+      Fluttertoast.showToast(
+          msg: " Visitor Login Success",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+
+      loder=false;
+    });
+
   }
 }
