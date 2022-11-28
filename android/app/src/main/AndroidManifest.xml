@@ -2,6 +2,7 @@
     package="com.nfcunivercity.app">
     
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="nfcapplication"
         android:name="${applicationName}"

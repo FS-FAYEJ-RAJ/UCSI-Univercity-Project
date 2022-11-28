@@ -57,7 +57,7 @@ class _AdminLoginState extends State<AdminLogin> {
                   Padding(
                     padding: const EdgeInsets.only(left: 16),
                     child: Text(
-                      'Admin ID',
+                      'Admin Email ID',
                       style: GoogleFonts.alata(
                           textStyle: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -66,7 +66,7 @@ class _AdminLoginState extends State<AdminLogin> {
                     ),
                   ),
                   TextFildWidget(
-                    name: 'Id',
+                    name: 'Email Id',
                     controller: idControllar,
                   ),
                   Padding(

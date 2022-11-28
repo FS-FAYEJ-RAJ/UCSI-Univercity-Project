@@ -53,10 +53,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ButtonDesign(buttonname: 'Visitor',onTab: (){
                    Navigator.push(context,MaterialPageRoute(builder: (_)=>VisitorLoginScreen()));
                 },),
-                SizedBox(height: 10,),
-                ButtonDesign(buttonname: 'Visitor',onTab: (){
-                  Navigator.push(context,MaterialPageRoute(builder: (_)=>ScannerScreen()));
-                },)
 
               ],
             ),

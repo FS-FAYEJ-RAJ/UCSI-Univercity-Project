@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nfcapplication/screen/scanner_screen.dart';
 import 'package:nfcapplication/screen/stafe_login_screen.dart';
 
 import '../widged/button_widget.dart';
@@ -62,20 +63,20 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
                                   fontWeight: FontWeight.bold, fontSize: 15,color: Colors.white)))),
                       TextFildWidget(name: 'password', controller: passwordcontrollar),
 
-                      Padding(
-                        padding: const EdgeInsets.only(right: 16),
-                        child: Align(
-                          alignment: Alignment.bottomRight,
-                          child: GestureDetector(
-                            onTap: (){
-                              Navigator.push(context,MaterialPageRoute(builder: (_)=>ForgetPasswordScreen()));
-                            },
-                            child: Text('Forget Password?',style: GoogleFonts.alata(
-                                textStyle: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 15,color: Colors.white))),
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(right: 16),
+                      //   child: Align(
+                      //     alignment: Alignment.bottomRight,
+                      //     child: GestureDetector(
+                      //       onTap: (){
+                      //         Navigator.push(context,MaterialPageRoute(builder: (_)=>ForgetPasswordScreen()));
+                      //       },
+                      //       child: Text('Forget Password?',style: GoogleFonts.alata(
+                      //           textStyle: TextStyle(
+                      //               fontWeight: FontWeight.bold, fontSize: 15,color: Colors.white))),
+                      //     ),
+                      //   ),
+                      // ),
                       SizedBox(height: 10,),
                     ],
                   ),
@@ -91,7 +92,6 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
                       if(allColetionData[i]['id']==idControllar.text && allColetionData[i]['password']==passwordcontrollar.text ){
                         setState(() {
                           data=true;
-
                         });
                         print(data);
                         print(allColetionData[i]['id']);
@@ -121,10 +121,9 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
 
                         }
                       else{
-                        Navigator.push(context, MaterialPageRoute(builder: (_)=>Logged()));
+                        Navigator.push(context, MaterialPageRoute(builder: (_)=>ScannerScreen()));
 
                       }
-
 
                   },),
                   SizedBox(height: 10,),
@@ -145,7 +144,6 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
 
   Future<void> getData() async {
     // Get docs from collection reference
-
 
   }
 

@@ -56,20 +56,20 @@ class _StafeLoginScreenState extends State<StafeLoginScreen> {
                                 fontWeight: FontWeight.bold, fontSize: 15,color: Colors.white)))),
                     TextFildWidget(name: 'password', controller: passwordcontrollar),
 
-                    Padding(
-                      padding: const EdgeInsets.only(right: 16),
-                      child: Align(
-                        alignment: Alignment.bottomRight,
-                        child: InkWell(
-                          onTap: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (_)=>ForgetPasswordScreen()));
-                          },
-                          child: Text('Forget Password?',style: GoogleFonts.alata(
-                              textStyle: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15,color: Colors.white))),
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(right: 16),
+                    //   child: Align(
+                    //     alignment: Alignment.bottomRight,
+                    //     child: InkWell(
+                    //       onTap: (){
+                    //         Navigator.push(context,MaterialPageRoute(builder: (_)=>ForgetPasswordScreen()));
+                    //       },
+                    //       child: Text('Forget Password?',style: GoogleFonts.alata(
+                    //           textStyle: TextStyle(
+                    //               fontWeight: FontWeight.bold, fontSize: 15,color: Colors.white))),
+                    //     ),
+                    //   ),
+                    // ),
                     SizedBox(height: 10,),
                   ],
                 ),

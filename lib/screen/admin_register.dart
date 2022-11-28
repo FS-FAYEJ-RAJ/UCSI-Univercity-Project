@@ -20,6 +20,8 @@ class _AdminRegisterState extends State<AdminRegister> {
   final TextEditingController idControllar=TextEditingController();
   final TextEditingController emailControllar=TextEditingController();
   final TextEditingController passwordcontrollar=TextEditingController();
+   bool loder=false;
+   bool lectureloder=false;
   @override
   Widget build(BuildContext context) {
     var hig = MediaQuery.of(context).size.height;
@@ -79,15 +81,20 @@ class _AdminRegisterState extends State<AdminRegister> {
 
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ButtonDesign(buttonname: 'Student',onTab: (){
+                  child:loder? Center(child: CircularProgressIndicator(),):  ButtonDesign(buttonname: 'Student',onTab: (){
                     studentregister();
                   },),
                 ),
 
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ButtonDesign(buttonname: 'LECTURER',onTab: (){
+                  child:lectureloder? Center(child: CircularProgressIndicator(),): ButtonDesign(buttonname: 'LECTURER',onTab: (){
                     lecturetregister();
+
+                    nameControllar.clear();
+                    idControllar.clear();
+                    emailControllar.clear();
+                    passwordcontrollar.clear();
                   },),
                 ),
                 Padding(
@@ -107,18 +114,26 @@ class _AdminRegisterState extends State<AdminRegister> {
   }
 
   Future studentregister()async{
+    setState(() {
+      loder=true;
+    });
    await FirebaseFirestore.instance.collection("Student").add(
       {
         "name" : nameControllar.text,
         "id"   : idControllar.text,
         "Email" : emailControllar.text,
-        "password"   :passwordcontrollar.text
+        "password" :passwordcontrollar.text
       }
     );
-
+    setState(() {
+      loder=false;
+    });
   }
 
   Future lecturetregister()async{
+    setState(() {
+      lectureloder=true;
+    });
    await FirebaseFirestore.instance.collection("Lecturer").add(
         {
           "name" : nameControllar.text,
@@ -127,6 +142,9 @@ class _AdminRegisterState extends State<AdminRegister> {
           "password"  :passwordcontrollar.text
         }
     );
+    setState(() {
+      lectureloder=false;
+    });
 
   }
 }
